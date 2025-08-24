@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Services - SMBoost.hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "https://slargmpgjicccajeaadh.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYXJnbXBnamljY2NhamVhYWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwNDk5NjksImV4cCI6MjA3MTYyNTk2OX0.uEEhnWEN5loqT1x8fNnKHaYjb8EhXw5t3S6cxWYvIEw"; // Use service_role key only on backend
+      // Initialize Supabase client
+      const supabase = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+    </script>
     <style>
       body {
         font-family: "Poppins", sans-serif;
@@ -147,17 +158,37 @@
             const data = await res.json();
             if (data.order) {
               resultDiv.innerHTML = `Success! Order ID: ${data.order}`;
-              // Store locally for orders.html
-              let orders = JSON.parse(localStorage.getItem("orders")) || [];
-              orders.push({
-                order_id: data.order,
-                service,
-                link,
-                quantity,
-                status: "Processing",
-                date: new Date().toLocaleString(),
-              });
-              localStorage.setItem("orders", JSON.stringify(orders));
+
+              const {
+                data: { user },
+              } = await supabase.auth.getUser();
+              if (!user) {
+                alert("Please log in to place an order.");
+                return;
+              }
+              // Store order in Supabase
+              console.log("Storing order in Supabase...");
+              // Ensure user is authenticated
+
+              // Insert order into Supabase
+              const { error: dbError } = await supabase.from("Orders").insert([
+                {
+                  user_id: (await supabase.auth.getUser()).data.user.id, // Authenticated user
+                  smm_order_id: data.order,
+                  service_id: service,
+                  link: link,
+                  quantity: quantity,
+                  status: "Processing",
+                  created_at: new Date().toISOString(),
+                },
+              ]);
+
+              if (dbError) {
+                console.error("Supabase insert error:", dbError.message);
+              } else {
+                console.log("Order stored in Supabase!");
+              }
+
               document.getElementById("serviceForm").reset();
             } else {
               resultDiv.innerHTML = `Failed: ${JSON.stringify(data)}`;

@@ -8,6 +8,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+
     <style>
       body {
         font-family: "Poppins", sans-serif;
@@ -264,6 +265,51 @@
       }
       window.addEventListener("hashchange", routeFromHash);
       document.addEventListener("DOMContentLoaded", routeFromHash);
+    </script>
+
+    <script type="module">
+      import { supabase } from "./supabase.js";
+
+      async function signUp(email, password) {
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) alert(error.message);
+        else alert("User created: " + data.user.email);
+      }
+
+      async function signIn(email, password) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) alert(error.message);
+        else {
+          alert("Welcome back: " + data.user.email);
+          window.location.href = "home.html";
+        }
+      }
+
+      // Attach to forms
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = e.target.querySelector('input[type="email"]').value;
+          const password = e.target.querySelector(
+            'input[type="password"]'
+          ).value;
+          await signUp(email, password);
+        });
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = e.target.querySelector('input[type="email"]').value;
+          const password = e.target.querySelector(
+            'input[type="password"]'
+          ).value;
+          await signIn(email, password);
+        });
     </script>
   </body>
 </html>

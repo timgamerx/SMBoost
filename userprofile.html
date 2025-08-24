@@ -138,5 +138,24 @@
 
       loadProfile();
     </script>
+    <script type="module">
+      import { supabase } from "./supabase.js";
+      async function getUserProfile(userId) {
+        const { data, error } = await supabase
+          .from("Users")
+          .select("*")
+          .eq("id", userId)
+          .single();
+
+        if (error) console.error(error);
+        else return data;
+      }
+
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT") {
+          window.location.href = "login.html";
+        }
+      });
+    </script>
   </body>
 </html>
