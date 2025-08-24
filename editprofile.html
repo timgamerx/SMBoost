@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile - SMBoost</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="edit-profile-container">
+      <header>
+        <h1>Edit Profile</h1>
+        <a href="userprofile.html" class="back-link">← Back to Profile</a>
+      </header>
+      <style>
+        body {
+          font-family: "Poppins", sans-serif;
+          background: #f9f9f9;
+          color: #333;
+          margin: 0;
+          padding: 0;
+        }
+        .edit-profile-container {
+          max-width: 600px;
+          margin: 50px auto;
+          background: #fff;
+          padding: 30px;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+        }
+        .back-link {
+          text-decoration: none;
+          color: #fa6e11;
+        }
+        .back-link:hover {
+          text-decoration: underline;
+        }
+        .edit-profile-form {
+          display: flex;
+          flex-direction: column;
+        }
+        .edit-profile-form label {
+          margin-bottom: 8px;
+          font-weight: bold;
+        }
+        .edit-profile-form input,
+        .edit-profile-form textarea {
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 1em;
+        }
+        .edit-profile-form textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+        .profile-picture-section {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        .profile-img {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-bottom: 10px;
+        }
+        .upload-btn {
+          display: inline-block;
+          padding: 8px 15px;
+          background-color: #fa6e11;
+          color: #fff;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        .upload-btn:hover {
+          background-color: #0056b3;
+        }
+        .save-btn {
+          padding: 10px 20px;
+          background-color: #28a745;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1em;
+        }
+        .save-btn:hover {
+          background-color: #218838;
+        }
+      </style>
+      <form id="editProfileForm" class="edit-profile-form">
+        <div class="profile-picture-section">
+          <img
+            src="assets/avatar.jpeg"
+            alt="Profile Picture"
+            class="profile-img"
+            id="profileImgPreview"
+          />
+          <label for="profileImage" class="upload-btn">Change Picture</label>
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            style="display: none"
+          />
+        </div>
+
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your full name"
+          required
+        />
+
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          required
+        />
+
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <label for="bio">Bio</label>
+        <textarea
+          id="bio"
+          name="bio"
+          placeholder="Write a short bio"
+        ></textarea>
+
+        <button type="submit" class="save-btn">Save Changes</button>
+      </form>
+    </div>
+
+    <script>
+      const profileImageInput = document.getElementById("profileImage");
+      const profileImgPreview = document.getElementById("profileImgPreview");
+
+      profileImageInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            profileImgPreview.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document
+        .getElementById("editProfileForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert("Profile updated successfully!");
+          // Here you can integrate with Supabase or your backend to save changes
+        });
+    </script>
+  </body>
+</html>

@@ -6,7 +6,7 @@
     <title>Affiliates - SMBoost.hub</title>
     <style>
       body {
-        font-family: "Power Grotesk", sans-serif;
+        font-family: "Poppins", sans-serif;
         margin: 0;
         padding: 0;
         background-color: #f5f5f5;
@@ -101,7 +101,6 @@
       <a href="/dashboard.html">Dashboard</a>
       <a href="/addfunds.html">Add Funds</a>
       <a href="/howtoorder.html">How to Order</a>
-      <a href="/logout.html">Logout</a>
     </nav>
 
     <main>
@@ -144,9 +143,28 @@
         <a href="#" class="btn">Request Payout</a>
       </section>
 
-      <section class="stats">
-        <a href="/home.html" class="btn">Back to Home</a>
+      <section class="back-btn-section">
+        <a href="javascript:history.back()" class="back-btn">Back</a>
       </section>
+      <style>
+        .back-btn-section {
+          display: flex;
+          justify-content: left;
+          margin-top: 20px;
+        }
+        .back-btn {
+          background: #fa6e11;
+          color: #fff;
+          padding: 10px 24px;
+          border-radius: 5px;
+          text-decoration: none;
+          font-weight: bold;
+          transition: background 0.2s;
+        }
+        .back-btn:hover {
+          background: #e05d0f;
+        }
+      </style>
     </main>
 
     <footer>

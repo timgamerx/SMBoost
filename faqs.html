@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <style>
       body {
-        font-family: "Power Grotesk", sans-serif;
+        font-family: "Poppins", sans-serif;
         margin: 0;
         padding: 0;
         background: #f5f5f5;
@@ -116,27 +116,26 @@
       </div>
     </div>
 
-    <section class="backtohome">
-      <a href="/home.html" class="btn">Back to Home</a>
+    <section class="back-btn-section">
+      <a href="javascript:history.back()" class="back-btn">Back</a>
     </section>
     <style>
-      .backtohome {
-        text-align: center;
-        margin: 20px 0;
+      .back-btn-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
       }
-
-      .btn {
-        display: inline-block;
+      .back-btn {
         background: #fa6e11;
         color: #fff;
-        padding: 10px 20px;
+        padding: 10px 24px;
         border-radius: 5px;
         text-decoration: none;
         font-weight: bold;
+        transition: background 0.2s;
       }
-
-      .btn:hover {
-        background: #e55b0e;
+      .back-btn:hover {
+        background: #e05d0f;
       }
     </style>
 

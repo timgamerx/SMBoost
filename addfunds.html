@@ -4,9 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Funds - SMBoost.hub</title>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+
     <style>
       body {
-        font-family: "Power Grotesk", sans-serif;
+        font-family: "Poppins", sans-serif;
         margin: 0;
         padding: 0;
         background: #f8f8f8;
@@ -80,27 +82,65 @@
     </style>
   </head>
   <body>
-    <div class="add-funds-container">
+    <section id="add-funds" class="page">
       <h2>Add Funds</h2>
-      <form id="addFundsForm">
-        <div class="input-group">
-          <label for="amount">Amount (NGN)</label>
-          <input
-            type="number"
-            id="amount"
-            name="amount"
-            placeholder="Enter amount"
-            required
-          />
-        </div>
-        <div class="payment-option" id="flutterwaveOption">
-          <img src="/assets/Flutterwave_Logo.png" alt="Flutterwave" />
-          <span>Pay with Flutterwave</span>
-        </div>
-        <button type="submit">Proceed to Payment</button>
+      <form onsubmit="event.preventDefault(); payWithFlutterwave();">
+        <label for="amount">Enter Amount (NGN)</label>
+        <input
+          type="number"
+          id="amount"
+          name="amount"
+          placeholder="e.g. 5000"
+          required
+        />
+        <button type="submit">Pay with Flutterwave</button>
       </form>
-    </div>
+    </section>
 
+    <style>
+      .page {
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 500px;
+        height: 300px;
+        margin: auto;
+      }
+      .page h2 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .page form {
+        display: flex;
+        flex-direction: column;
+      }
+      .page label {
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555;
+      }
+      .page input {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      .page button {
+        padding: 12px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .page button:hover {
+        background-color: #45a049;
+      }
+    </style>
     <script>
       document
         .getElementById("addFundsForm")
@@ -114,6 +154,36 @@
             alert("Please enter a valid amount");
           }
         });
+    </script>
+
+    <script>
+      function payWithFlutterwave() {
+        FlutterwaveCheckout({
+          public_key: "FLWPUBK_TEST-xxxxxxxxxxxxxxxxxxxxx", // Replace with your public key
+          tx_ref: "SMB-" + Date.now(),
+          amount: document.getElementById("amount").value,
+          currency: "NGN",
+          payment_options: "card, banktransfer, ussd",
+          customer: {
+            email: "user@example.com", // Replace with logged-in user email
+            phonenumber: "08012345678",
+            name: "John Doe",
+          },
+          customizations: {
+            title: "SMBoost.hub",
+            description: "Funding your wallet",
+            logo: "assets/COREL.png",
+          },
+          callback: function (data) {
+            console.log(data);
+            alert("Payment successful: " + data.transaction_id);
+            // Send payment confirmation to your backend here
+          },
+          onclose: function () {
+            console.log("Payment window closed");
+          },
+        });
+      }
     </script>
   </body>
 </html>
